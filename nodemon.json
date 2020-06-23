@@ -1,0 +1,7 @@
+{
+    "env": {
+        "MONGO_USER": "beatgigmain",
+        "MONGO_PASSWORD": "i5iS9DNvwUZU9KFQ",
+        "MONGO_DATABASE": "beatgig_main"
+    }
+}
