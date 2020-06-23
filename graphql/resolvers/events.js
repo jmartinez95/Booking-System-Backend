@@ -1,4 +1,5 @@
 const Event = require('../../models/event');
+const User = require('../../models/user');
 
 const { transformEvent } = require('./resolver-helpers')
 
@@ -14,20 +15,23 @@ module.exports = {
             throw err;
         };
     },
-    createEvent: async args => {
+    createEvent: async (args, req) => {
+        if (!req.isAuth) {
+            throw new Error('Unathenticated');
+        }
         const event = new Event({
             title: args.eventInput.title,
             description: args.eventInput.description,
             price: +args.eventInput.price,
             date: new Date(args.eventInput.date),
-            creator: '5ef132b646494c1724b2c5ff'
+            creator: req.userId
         });
         let createdEvent;
         try {
         const result = await event
         .save()
             createdEvent = transformEvent(result);
-            const creator = await User.findById('5ef132b646494c1724b2c5ff')
+            const creator = await User.findById(req.userId)
             if(!creator) {
                 throw new Error("User not found");
             }
